@@ -1,0 +1,10 @@
+node_modules/
+dist/
+release/
+desktop/dist/
+.claude/
+# trailer project (uses a copyrighted song + large generated footage) is kept out of the repo
+trailer/
+*.log
+.DS_Store
+Thumbs.db

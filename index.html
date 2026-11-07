@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Technoblade: The Blood God</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700;900&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/ui/styles.css" />
+</head>
+<body>
+  <canvas id="game"></canvas>
+
+  <!-- ============ LOADING ============ -->
+  <div id="loading">
+    <div class="load-title"><span class="small">Technoblade</span>THE BLOOD GOD</div>
+    <div class="load-bar"><div id="load-fill"></div></div>
+    <div id="load-label">Gathering the horde…</div>
+    <div id="load-click" class="hidden">Click to enter</div>
+  </div>
+
+  <!-- ============ MAIN MENU ============ -->
+  <div id="main-menu">
+    <div class="menu-title">
+      <div class="mt-small">Technoblade</div>
+      <div class="mt-big">THE BLOOD GOD</div>
+      <div class="mt-rule"></div>
+      <div class="mt-tag">Blood for the Blood God</div>
+    </div>
+    <nav class="menu-buttons">
+      <button data-action="play" class="primary">Play</button>
+      <button data-action="howto">How to Play</button>
+      <button data-action="settings">Settings</button>
+      <button data-action="credits">Credits</button>
+    </nav>
+    <div class="menu-foot">Best score <b id="menu-best">0</b></div>
+
+    <section id="howto-panel" class="menu-panel">
+      <h2>How to Play</h2>
+      <h3 class="howto-sub">Mode II — Parkour Combat</h3>
+      <div class="howto-grid">
+        <div class="hk"><kbd>W A S D</kbd><span>Move · momentum carries over between moves</span></div>
+        <div class="hk"><kbd>Space</kbd><span>Jump · again in the air = double jump · near a wall = wall jump</span></div>
+        <div class="hk"><kbd>Shift</kbd><span>Sprint</span></div>
+        <div class="hk"><kbd>Ctrl</kbd><span>Slide (boost) · jump out of it to keep the speed</span></div>
+        <div class="hk"><kbd>Jump at walls</kbd><span>Wall-run automatically when moving fast alongside one</span></div>
+        <div class="hk"><kbd>E</kbd><span>Dash (2 charges, ground or air)</span></div>
+        <div class="hk"><kbd>Q</kbd><span>Sword slam — launch up, slam down, shockwave</span></div>
+        <div class="hk"><kbd>LMB</kbd><span>Sword · running / slide / aerial / wall-run / dash / dive attacks</span></div>
+        <div class="hk"><kbd>RMB</kbd> + <kbd>LMB</kbd><span>Aim &amp; shoot · aiming mid-air slows time</span></div>
+        <div class="hk"><kbd>F</kbd><span>Blood God (full meter)</span></div>
+        <div class="hk"><kbd>C</kbd><span>Toggle first / third person</span></div>
+        <div class="hk"><kbd>Look down + LMB</kbd><span>Dive attack from the air</span></div>
+      </div>
+      <h3 class="howto-sub">Mode I — Arkham Combat</h3>
+      <div class="howto-grid">
+        <div class="hk"><kbd>W A S D</kbd><span>Move · <kbd>Shift</kbd> sprint</span></div>
+        <div class="hk"><kbd>Mouse</kbd><span>Camera</span></div>
+        <div class="hk"><kbd>LMB</kbd><span>Light attack — chain up to 5 hits</span></div>
+        <div class="hk"><kbd>Hold LMB</kbd><span>Charged attack (release)</span></div>
+        <div class="hk"><kbd>E</kbd><span>Heavy attack · breaks shields · executes downed foes</span></div>
+        <div class="hk"><kbd>V</kbd> / <kbd>MMB</kbd><span>Launcher — kick foes airborne, then LMB for aerial combos</span></div>
+        <div class="hk"><kbd>C</kbd><span>Jump · <kbd>E</kbd> in air = aerial takedown</span></div>
+        <div class="hk"><kbd>F</kbd><span>Counter when an indicator flashes</span></div>
+        <div class="hk"><kbd>Space</kbd><span>Dodge (time it for a Perfect Dodge)</span></div>
+        <div class="hk"><kbd>Hold RMB</kbd><span>Aim bow · hold/release LMB to draw &amp; fire</span></div>
+        <div class="hk"><kbd>X</kbd><span>Finisher (needs a 5+ combo)</span></div>
+        <div class="hk"><kbd>Q</kbd><span>Blood God mode (full meter)</span></div>
+        <div class="hk"><kbd>1 2 3 4</kbd><span>Critical Strike · Sword Slam · Whirlwind · Precision Shot</span></div>
+        <div class="hk"><kbd>Tab</kbd><span>Lock on · <kbd>Esc</kbd> pause</span></div>
+      </div>
+      <div class="howto-tips">
+        <div class="tip"><i class="ind melee"></i><b>White</b> warning — press <kbd>F</kbd> to counter.</div>
+        <div class="tip"><i class="ind heavy"></i><b>Orange</b> warning — heavy attack: <kbd>F</kbd> heavy counter or dodge.</div>
+        <div class="tip"><i class="ind unblockable"></i><b>Red</b> warning — unblockable: <kbd>Space</kbd> dodge it.</div>
+        <div class="tip"><i class="ind ranged"></i><b>Yellow</b> warning — projectile: <kbd>F</kbd> as it arrives deflects it.</div>
+        <p>Keep striking without getting hit to build your combo multiplier. Hits, counters and kills charge the Blood God. Headshots and glowing weak points take extra arrow damage. Arrows can be picked back up.</p>
+      </div>
+      <button class="back" data-back>Back</button>
+    </section>
+
+    <section id="settings-panel" class="menu-panel">
+      <h2>Settings</h2>
+      <div class="settings">
+        <label>Master volume <input id="set-master" type="range" min="0" max="1" step="0.05" /><output></output></label>
+        <label>Music <input id="set-music" type="range" min="0" max="1" step="0.05" /><output></output></label>
+        <label>Effects <input id="set-sfx" type="range" min="0" max="1" step="0.05" /><output></output></label>
+        <label>Mouse sensitivity <input id="set-sens" type="range" min="0.3" max="2.5" step="0.05" /><output></output></label>
+        <label class="row">Invert camera Y <input id="set-invert" type="checkbox" /></label>
+        <label class="row">Camera shake <input id="set-shake" type="checkbox" /></label>
+        <label class="row">Graphics
+          <select id="set-quality"><option value="high">High</option><option value="medium">Medium</option><option value="low">Low (no post FX)</option></select>
+        </label>
+        <label class="row">Fullscreen <input id="set-fullscreen" type="checkbox" /></label>
+        <p class="set-note">In a windowed browser, Ctrl+W can close the tab — fullscreen captures it so Ctrl is safe to use for sliding (you'll also be asked before leaving mid-run).</p>
+      </div>
+      <h3 class="bind-title">Controls</h3>
+      <div class="bind-tabs"><button data-bind-mode="arkham" class="on">Mode I · Arkham</button><button data-bind-mode="parkour">Mode II · Parkour</button></div>
+      <div id="bind-list"></div>
+      <button class="bind-reset">Reset to defaults</button>
+      <button class="back" data-back>Back</button>
+    </section>
+
+    <section id="credits-panel" class="menu-panel">
+      <h2>Credits</h2>
+      <p class="credits-intro">A fan tribute to Technoblade. Every model, animation, texture, sound and track is an existing free asset by the artists below.</p>
+      <div id="credits-list"></div>
+      <button class="back" data-back>Back</button>
+    </section>
+  </div>
+
+  <!-- ============ MODE SELECT ============ -->
+  <div id="mode-select">
+    <div class="ms-title"><span>Choose your battle</span></div>
+    <div class="ms-cards">
+      <div class="mode-card arkham" data-mode="arkham">
+        <div class="mode-view"></div>
+        <div class="mode-info">
+          <div class="mode-num">MODE I</div>
+          <h3>Arkham Combat</h3>
+          <p class="mode-tag">Cinematic free-flow swordplay. Read the horde, counter on the flash, chain combos into brutal finishers.</p>
+          <ul><li>Third-person free-flow combat</li><li>Counters, parries &amp; directional dodges</li><li>Cinematic finishers &amp; executions</li><li>Bow, Blood God &amp; four abilities</li></ul>
+          <div class="mode-best"></div>
+          <div class="mode-go">Enter <kbd>Click</kbd></div>
+        </div>
+      </div>
+      <div class="mode-card parkour" data-mode="parkour">
+        <div class="mode-view"></div>
+        <div class="mode-info">
+          <div class="mode-num">MODE II</div>
+          <h3>Parkour Combat</h3>
+          <p class="mode-tag">Never stop moving. Build speed, run the walls, slide under blades and slam down from above.</p>
+          <ul><li>First &amp; third person (<kbd>C</kbd>)</li><li>Wall-running, sliding, double jump, air dash</li><li>Momentum-scaled sword hits &amp; ground slams</li><li>Shoot mid-air with focus slow-mo</li></ul>
+          <div class="mode-best"></div>
+          <div class="mode-go">Enter <kbd>Click</kbd></div>
+        </div>
+      </div>
+    </div>
+    <button class="back">Back</button>
+  </div>
+
+  <!-- ============ HUD ============ -->
+  <div id="hud" class="hidden">
+    <div id="player-panel">
+      <div class="crest" style="--icon:url(assets/ui/crown.svg)"></div>
+      <div class="bars">
+        <div class="pname">TECHNOBLADE</div>
+        <div id="hp-bar"><div id="hp-trail"></div><div id="hp-fill"></div><span id="hp-text">100 / 100</span></div>
+        <div id="bg-meter"><div id="bg-fill"></div><span class="bg-label">BLOOD GOD <kbd data-bind="bloodgod">Q</kbd></span></div>
+        <div id="ammo"><i style="--icon:url(assets/ui/arrow-flights.svg)"></i><span id="ammo-count">20</span><small>arrows</small></div>
+      </div>
+    </div>
+    <div id="wave-panel">
+      <div class="wave-label">WAVE <span id="wave-num">1</span></div>
+      <div class="foes"><span id="enemies-left">0</span> foes remain</div>
+    </div>
+    <div id="boss-bar"><div id="boss-name">Boss</div><div class="boss-track"><div id="boss-fill"></div></div></div>
+    <div id="score-panel">
+      <div id="score">0</div>
+      <div class="kills"><i style="--icon:url(assets/ui/skull-crossed-bones.svg)"></i><span id="kills">0</span> slain</div>
+    </div>
+    <div id="combo">
+      <div class="combo-row"><span id="combo-num">0</span><span class="combo-hits">HITS</span></div>
+      <div class="combo-mult-row">MULTIPLIER <span id="combo-mult">x1</span></div>
+      <div class="combo-decay"><div id="combo-decay"></div></div>
+    </div>
+    <div id="abilities"></div>
+    <div id="flashes"></div>
+    <div id="crosshair"><div id="draw-ring"></div><div class="dot"></div></div>
+    <div id="hitmarker"></div>
+    <div id="lock-reticle"></div>
+    <div id="dmg-dirs"></div>
+    <div id="hurt-vignette"></div>
+    <div id="bg-banner"><span>BLOOD GOD</span></div>
+    <div id="controls-hint"><kbd>LMB</kbd> attack <kbd>E</kbd> heavy <kbd>F</kbd> counter <kbd>Space</kbd> dodge <kbd>RMB</kbd> bow <kbd>Esc</kbd> pause</div>
+    <!-- Mode 2 HUD -->
+    <div id="pk-hud">
+      <div id="pk-speed"><div class="pk-speed-num"><span id="pk-speed-val">0</span><small>m/s</small></div><div class="pk-speed-bar"><div id="pk-speed-fill"></div></div></div>
+      <div id="pk-abilities">
+        <div class="pk-ab" id="pk-ab-dash"><i style="--icon:url(assets/ui/sprint.svg)"></i><div class="pk-pips"><b></b><b></b></div><span>Dash <kbd data-bind="dash">E</kbd></span></div>
+        <div class="pk-ab" id="pk-ab-jump"><i style="--icon:url(assets/ui/dodge.svg)"></i><div class="pk-cd"></div><span>Air Jump</span></div>
+        <div class="pk-ab" id="pk-ab-slide"><i style="--icon:url(assets/ui/arrow-flights.svg)"></i><div class="pk-cd"></div><span>Slide <kbd data-bind="slide">Ctrl</kbd></span></div>
+        <div class="pk-ab" id="pk-ab-slam"><i style="--icon:url(assets/ui/hammer-drop.svg)"></i><div class="pk-cd"></div><span>Slam <kbd data-bind="slam">Q</kbd></span></div>
+        <div class="pk-ab" id="pk-ab-special"><i style="--icon:url(assets/ui/crowned-skull.svg)"></i><div class="pk-cd"></div><span>Blood God <kbd data-bind="special">F</kbd></span></div>
+      </div>
+      <div id="pk-view">1ST PERSON <kbd>C</kbd></div>
+      <div id="pk-focus"><div id="pk-focus-fill"></div></div>
+      <div id="pk-dot"></div>
+    </div>
+  </div>
+  <div id="world-ui" class="hidden"></div>
+
+  <!-- ============ OVERLAYS ============ -->
+  <div id="intro-card"><div class="ic-small">The legend returns</div><div class="ic-big">TECHNOBLADE NEVER DIES</div></div>
+  <div id="wave-announce"><div class="wa-label">WAVE</div><div id="wa-num">1</div><div id="wa-sub"></div><div id="wa-new"></div></div>
+  <div id="wave-complete"><div id="wc-title">WAVE CLEARED</div><div id="wc-stats"></div></div>
+  <div id="prep"><div class="prep-label">Next wave in</div><div id="prep-time">7</div><div class="prep-tip">Collect arrows and potions</div></div>
+
+  <div id="pause-menu">
+    <div class="pm-box">
+      <h2>Paused</h2>
+      <button id="pm-resume" class="primary">Resume</button>
+      <button id="pm-restart">Restart</button>
+      <button id="pm-settings">Settings</button>
+      <button id="pm-quit">Quit to Menu</button>
+    </div>
+  </div>
+  <div id="death-screen">
+    <div class="ds-box">
+      <div class="ds-mode" id="ds-mode"></div>
+      <div class="ds-title">FALLEN</div>
+      <div class="ds-sub">…but Technoblade never dies. Rise again.</div>
+      <div id="ds-stats"></div>
+      <div class="ds-buttons"><button id="ds-restart" class="primary">Rise Again</button><button id="ds-menu">Main Menu</button></div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

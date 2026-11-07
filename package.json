@@ -1,0 +1,19 @@
+{
+  "name": "technoblade-blood-god",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5199 --strictPort",
+    "build": "vite build",
+    "preview": "vite preview --port 5199"
+  },
+  "dependencies": {
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.7"
+  },
+  "license": "MIT",
+  "description": "Technoblade: The Blood God - a free open-source 3D wave-survival action game (Three.js)"
+}

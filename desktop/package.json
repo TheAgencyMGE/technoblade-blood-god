@@ -1,0 +1,17 @@
+{
+  "name": "technoblade-blood-god",
+  "productName": "Technoblade - The Blood God",
+  "version": "1.0.0",
+  "description": "Technoblade: The Blood God",
+  "main": "main.cjs",
+  "private": true,
+  "devDependencies": {
+    "@electron/packager": "^18.3.6",
+    "electron": "^33.2.1"
+  },
+  "scripts": {
+    "start": "electron .",
+    "package": "electron-packager . \"Technoblade - The Blood God\" --platform=win32 --arch=x64 --out=../release --asar --overwrite"
+  },
+  "license": "MIT"
+}
